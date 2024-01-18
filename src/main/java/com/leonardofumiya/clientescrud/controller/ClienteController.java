@@ -15,6 +15,9 @@ import java.util.List;
 @RequestMapping("/clientes")
 public class ClienteController {
 
+    @Autowired
+    private ClienteService service;
+
     @PostMapping
     public ResponseEntity<ClienteDTO> cadastrar(@RequestBody @Valid ClienteDTO clienteDTO) {
         ClienteDTO clienteCadastrado = service.cadastrar(clienteDTO);
