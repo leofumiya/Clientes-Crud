@@ -2,6 +2,7 @@ package com.leonardofumiya.clientescrud.service;
 
 import com.leonardofumiya.clientescrud.dto.ClienteDTO;
 import com.leonardofumiya.clientescrud.entities.Cliente;
+import com.leonardofumiya.clientescrud.exception.ClienteNaoEncontradoException;
 import com.leonardofumiya.clientescrud.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,12 +61,15 @@ public class ClienteService {
 
     @Transactional
     public void excluir(Long id) {
+        repository.findById(id)
+                .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não encontrado com o ID: " + id));
         repository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     public Cliente buscarClientePorId(Long id) {
-        return repository.getReferenceById(id);
+        return repository.findById(id)
+                .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não encontrado com o ID: " + id));
     }
 
 }
