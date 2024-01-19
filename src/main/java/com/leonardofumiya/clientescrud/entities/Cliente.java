@@ -26,6 +26,10 @@ public class Cliente {
     private String telefone;
     private String email;
 
+    @ManyToOne
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
+
     public void setNome(String nome) {
         this.nome = nome;
     }
