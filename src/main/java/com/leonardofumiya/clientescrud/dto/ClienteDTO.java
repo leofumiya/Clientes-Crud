@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
@@ -17,11 +18,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ClienteDTO {
 
-    private Long id;
+    private Long idCliente;
     @NotBlank
     private String nome;
     @NotBlank
-    @Pattern(regexp = "\\d{10,11}", message = "O CPF deve conter 10 ou 11 dígitos")
+    @CPF
     private String cpf;
     @NotNull
     @JsonFormat(pattern = "dd/MM/yyyy")
@@ -34,7 +35,7 @@ public class ClienteDTO {
     private String email;
 
     public ClienteDTO(Cliente cliente) {
-        this.id = cliente.getId();
+        this.idCliente = cliente.getId();
         this.nome = cliente.getNome();
         this.cpf = cliente.getCpf();
         this.dataNascimento = cliente.getDataNascimento();
