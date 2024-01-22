@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -29,7 +28,7 @@ public class EnderecoDTO {
     private String uf;
 
     public EnderecoDTO(Endereco entity) {
-        this.idEndereco = entity.getId();
+        this.idEndereco = entity.getIdEndereco();
         this.logradouro = entity.getLogradouro();
         this.bairro = entity.getBairro();
         this.numero = entity.getNumero();

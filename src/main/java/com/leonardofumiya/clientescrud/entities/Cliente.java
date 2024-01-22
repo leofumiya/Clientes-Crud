@@ -11,12 +11,12 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "idCliente")
 public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idCliente;
     private String nome;
     @Column(unique = true)
     private String cpf;
@@ -27,5 +27,4 @@ public class Cliente {
     @ManyToOne
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
-
 }

@@ -15,12 +15,12 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "idEndereco")
 public class Endereco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idEndereco;
     private String logradouro;
     private String bairro;
     private String numero;
@@ -32,8 +32,8 @@ public class Endereco {
     @OneToMany(mappedBy = "endereco")
     private List<Cliente> clientes = new ArrayList<>();
 
-    public Endereco(Long id, String logradouro, String bairro, String numero, String cep, String cidade, String uf) {
-        this.id = id;
+    public Endereco(Long idEndereco, String logradouro, String bairro, String numero, String cep, String cidade, String uf) {
+        this.idEndereco = idEndereco;
         this.logradouro = logradouro;
         this.bairro = bairro;
         this.numero = numero;
