@@ -2,7 +2,9 @@ package com.leonardofumiya.clientescrud.controller;
 
 import com.leonardofumiya.clientescrud.dto.EnderecoDTO;
 import com.leonardofumiya.clientescrud.entities.Endereco;
+import com.leonardofumiya.clientescrud.service.EnderecoService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/endercos")
 public class EnderecoController {
+
+    @Autowired
+    private EnderecoService service;
 
     @PostMapping
     public ResponseEntity<EnderecoDTO> cadastrar(@RequestBody @Valid EnderecoDTO enderecoDTO) {
