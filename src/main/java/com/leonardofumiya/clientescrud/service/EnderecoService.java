@@ -15,10 +15,10 @@ import java.util.List;
 public class EnderecoService {
 
     @Autowired
-    private EnderecoRepository repository;
+    private EnderecoRepository enderecoRepository;
 
     @Transactional
-    public EnderecoDTO cadastrar(EnderecoDTO enderecoDTO) {
+    public EnderecoDTO cadastrarEndereco(EnderecoDTO enderecoDTO) {
         Endereco endereco = new Endereco();
         endereco.setLogradouro(enderecoDTO.getLogradouro());
         endereco.setBairro(enderecoDTO.getBairro());
@@ -27,20 +27,20 @@ public class EnderecoService {
         endereco.setCidade(enderecoDTO.getCidade());
         endereco.setUf(enderecoDTO.getUf());
 
-        endereco = repository.save(endereco);
+        endereco = enderecoRepository.save(endereco);
         return new EnderecoDTO(endereco);
     }
 
     @Transactional(readOnly = true)
-    public List<EnderecoDTO> listar() {
-        List<Endereco> enderecos = repository.findAll();
+    public List<EnderecoDTO> listarEnderecos() {
+        List<Endereco> enderecos = enderecoRepository.findAll();
         return enderecos.stream().map(x -> new EnderecoDTO(x)).toList();
     }
 
     @Transactional
-    public EnderecoDTO atualizar(Long id, EnderecoDTO enderecoDTO) {
+    public EnderecoDTO atualizarEndereco(Long idEndereco, EnderecoDTO enderecoDTO) {
         try {
-            Endereco enderecoCadastrado = repository.getReferenceById(id);
+            Endereco enderecoCadastrado = enderecoRepository.getReferenceById(idEndereco);
             if (enderecoDTO.getLogradouro() != null) {
                 enderecoCadastrado.setLogradouro(enderecoDTO.getLogradouro());
             }
@@ -59,24 +59,24 @@ public class EnderecoService {
             if (enderecoDTO.getUf() != null) {
                 enderecoCadastrado.setUf(enderecoDTO.getUf());
             }
-            enderecoCadastrado = repository.save(enderecoCadastrado);
+            enderecoCadastrado = enderecoRepository.save(enderecoCadastrado);
             return new EnderecoDTO(enderecoCadastrado);
         } catch (EntityNotFoundException e){
-            throw new EnderecoNaoEncontradoException("Endereço não encontrado com o ID: " + id);
+            throw new EnderecoNaoEncontradoException("Endereço não encontrado com o ID: " + idEndereco);
         }
     }
 
     @Transactional
-    public void excluir(Long id) {
-        repository.findById(id)
-                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado com o ID: " + id));
-        repository.deleteById(id);
+    public void excluirEndereco(Long idEndereco) {
+        enderecoRepository.findById(idEndereco)
+                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado com o ID: " + idEndereco));
+        enderecoRepository.deleteById(idEndereco);
     }
 
     @Transactional(readOnly = true)
-    public Endereco buscarEnderecoPorId(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado com o ID: " + id));
+    public Endereco buscarEnderecoPorId(Long idEndereco) {
+        return enderecoRepository.findById(idEndereco)
+                .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado com o ID: " + idEndereco));
     }
 
 }

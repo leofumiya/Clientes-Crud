@@ -16,36 +16,36 @@ import java.util.List;
 public class ClienteController {
 
     @Autowired
-    private ClienteService service;
+    private ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<ClienteDTO> cadastrar(@RequestBody @Valid ClienteDTO clienteDTO) {
-        ClienteDTO clienteCadastrado = service.cadastrar(clienteDTO);
+    public ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
+        ClienteDTO clienteCadastrado = clienteService.cadastrarCliente(clienteDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteCadastrado);
     }
 
     @GetMapping
-    public ResponseEntity<List<ClienteDTO>> listar() {
-        List<ClienteDTO> clientes = service.listar();
+    public ResponseEntity<List<ClienteDTO>> listarClientes() {
+        List<ClienteDTO> clientes = clienteService.listarClientes();
         return ResponseEntity.ok(clientes);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ClienteDTO> buscarClientePorId(@PathVariable Long id) {
-        Cliente cliente = service.buscarClientePorId(id);
+    @GetMapping("/{idCliente}")
+    public ResponseEntity<ClienteDTO> buscarClientePorId(@PathVariable Long idCliente) {
+        Cliente cliente = clienteService.buscarClientePorId(idCliente);
         ClienteDTO clienteDTO = new ClienteDTO(cliente);
         return ResponseEntity.ok(clienteDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ClienteDTO> atualizar(@PathVariable Long id, @RequestBody @Valid ClienteDTO clienteDTO) {
-        ClienteDTO clienteAtualizado = service.atualizar(id, clienteDTO);
+    @PutMapping("/{idCliente}")
+    public ResponseEntity<ClienteDTO> atualizarCliente(@PathVariable Long idCliente, @RequestBody @Valid ClienteDTO clienteDTO) {
+        ClienteDTO clienteAtualizado = clienteService.atualizarCliente(idCliente, clienteDTO);
         return ResponseEntity.ok(clienteAtualizado);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ClienteDTO> excluir(@PathVariable Long id) {
-        service.excluir(id);
+    @DeleteMapping("/{idCliente}")
+    public ResponseEntity<ClienteDTO> excluirCliente(@PathVariable Long idCliente) {
+        clienteService.excluirCliente(idCliente);
         return ResponseEntity.noContent().build();
     }
 

@@ -17,13 +17,13 @@ import java.util.List;
 public class ClienteService {
 
     @Autowired
-    private ClienteRepository repository;
+    private ClienteRepository clienteRepository;
 
     @Autowired
     private EnderecoRepository enderecoRepository;
 
     @Transactional
-    public ClienteDTO cadastrar(ClienteDTO clienteDTO) {
+    public ClienteDTO cadastrarCliente(ClienteDTO clienteDTO) {
         if (enderecoRepository.findById(clienteDTO.getEndereco().getIdEndereco()).isPresent()) {
             Cliente cliente = new Cliente();
             cliente.setNome(clienteDTO.getNome());
@@ -33,7 +33,7 @@ public class ClienteService {
             cliente.setEmail(clienteDTO.getEmail());
             cliente.setEndereco(clienteDTO.getEndereco());
 
-            cliente = repository.save(cliente);
+            cliente = clienteRepository.save(cliente);
             return new ClienteDTO(cliente);
         } else {
             throw new EnderecoNaoEncontradoException("Endereço não encontrado com o ID: " + clienteDTO.getEndereco().getIdEndereco());
@@ -41,15 +41,15 @@ public class ClienteService {
     }
 
     @Transactional(readOnly = true)
-    public List<ClienteDTO> listar() {
-        List<Cliente> clientes = repository.findAll();
+    public List<ClienteDTO> listarClientes() {
+        List<Cliente> clientes = clienteRepository.findAll();
         return clientes.stream().map(x -> new ClienteDTO(x)).toList();
     }
 
     @Transactional
-    public ClienteDTO atualizar(Long id, ClienteDTO clienteDTO) {
+    public ClienteDTO atualizarCliente(Long idCliente, ClienteDTO clienteDTO) {
         try {
-            Cliente clienteCadastrado = repository.getReferenceById(id);
+            Cliente clienteCadastrado = clienteRepository.getReferenceById(idCliente);
             if (clienteDTO.getNome() != null) {
                 clienteCadastrado.setNome(clienteDTO.getNome());
             }
@@ -70,24 +70,24 @@ public class ClienteService {
                         .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado  com o ID: " + clienteDTO.getEndereco().getIdEndereco()));
                 clienteCadastrado.setEndereco(clienteDTO.getEndereco());
             }
-            clienteCadastrado = repository.save(clienteCadastrado);
+            clienteCadastrado = clienteRepository.save(clienteCadastrado);
             return new ClienteDTO(clienteCadastrado);
         }catch (EntityNotFoundException e) {
-            throw new ClienteNaoEncontradoException("Pessoa não encontrada com o ID: " + id);
+            throw new ClienteNaoEncontradoException("Pessoa não encontrada com o ID: " + idCliente);
         }
     }
 
     @Transactional
-    public void excluir(Long id) {
-        repository.findById(id)
-                .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não encontrado com o ID: " + id));
-        repository.deleteById(id);
+    public void excluirCliente(Long idCliente) {
+        clienteRepository.findById(idCliente)
+                .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não encontrado com o ID: " + idCliente));
+        clienteRepository.deleteById(idCliente);
     }
 
     @Transactional(readOnly = true)
-    public Cliente buscarClientePorId(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não encontrado com o ID: " + id));
+    public Cliente buscarClientePorId(Long idCliente) {
+        return clienteRepository.findById(idCliente)
+                .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não encontrado com o ID: " + idCliente));
     }
 
 }

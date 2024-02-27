@@ -16,36 +16,36 @@ import java.util.List;
 public class EnderecoController {
 
     @Autowired
-    private EnderecoService service;
+    private EnderecoService enderecoService;
 
     @PostMapping
-    public ResponseEntity<EnderecoDTO> cadastrar(@RequestBody @Valid EnderecoDTO enderecoDTO) {
-        EnderecoDTO enderecoCadastrado = service.cadastrar(enderecoDTO);
+    public ResponseEntity<EnderecoDTO> cadastrarEndereco(@RequestBody @Valid EnderecoDTO enderecoDTO) {
+        EnderecoDTO enderecoCadastrado = enderecoService.cadastrarEndereco(enderecoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(enderecoCadastrado);
     }
 
     @GetMapping
-    public ResponseEntity<List<EnderecoDTO>> listar() {
-        List<EnderecoDTO> enderecos = service.listar();
+    public ResponseEntity<List<EnderecoDTO>> listarEnderecos() {
+        List<EnderecoDTO> enderecos = enderecoService.listarEnderecos();
         return ResponseEntity.ok(enderecos);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EnderecoDTO> buscarEnderecoPorId(@PathVariable Long id) {
-        Endereco endereco = service.buscarEnderecoPorId(id);
+    @GetMapping("/{idEndereco}")
+    public ResponseEntity<EnderecoDTO> buscarEnderecoPorId(@PathVariable Long idEndereco) {
+        Endereco endereco = enderecoService.buscarEnderecoPorId(idEndereco);
         EnderecoDTO enderecoDTO = new EnderecoDTO(endereco);
         return ResponseEntity.ok(enderecoDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EnderecoDTO> atualizar(@PathVariable Long id, @RequestBody @Valid EnderecoDTO enderecoDTO) {
-        EnderecoDTO enderecoAtualizado = service.atualizar(id, enderecoDTO);
+    @PutMapping("/{idEndereco}")
+    public ResponseEntity<EnderecoDTO> atualizarEndereco(@PathVariable Long idEndereco, @RequestBody @Valid EnderecoDTO enderecoDTO) {
+        EnderecoDTO enderecoAtualizado = enderecoService.atualizarEndereco(idEndereco, enderecoDTO);
         return ResponseEntity.ok(enderecoAtualizado);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<EnderecoDTO> excluir(@PathVariable Long id) {
-        service.excluir(id);
+    @DeleteMapping("/{idEndereco}")
+    public ResponseEntity<EnderecoDTO> excluirEndereco(@PathVariable Long idEndereco) {
+        enderecoService.excluirEndereco(idEndereco);
         return ResponseEntity.noContent().build();
     }
 
