@@ -7,6 +7,8 @@ import com.leonardofumiya.clientescrud.exception.EnderecoNaoEncontradoException;
 import com.leonardofumiya.clientescrud.repository.ClienteRepository;
 import com.leonardofumiya.clientescrud.repository.EnderecoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Log4j2
 public class ClienteService {
 
     @Autowired
@@ -24,20 +27,15 @@ public class ClienteService {
 
     @Transactional
     public ClienteDTO cadastrarCliente(ClienteDTO clienteDTO) {
-        if (enderecoRepository.findById(clienteDTO.getEndereco().getIdEndereco()).isPresent()) {
             Cliente cliente = new Cliente();
             cliente.setNome(clienteDTO.getNome());
             cliente.setCpf(clienteDTO.getCpf());
             cliente.setDataNascimento(clienteDTO.getDataNascimento());
             cliente.setTelefone(clienteDTO.getTelefone());
             cliente.setEmail(clienteDTO.getEmail());
-            cliente.setEndereco(clienteDTO.getEndereco());
 
             cliente = clienteRepository.save(cliente);
             return new ClienteDTO(cliente);
-        } else {
-            throw new EnderecoNaoEncontradoException("Endereço não encontrado com o ID: " + clienteDTO.getEndereco().getIdEndereco());
-        }
     }
 
     @Transactional(readOnly = true)
@@ -65,10 +63,8 @@ public class ClienteService {
             if (clienteDTO.getEmail() != null) {
                 clienteCadastrado.setEmail(clienteDTO.getEmail());
             }
-            if (clienteDTO.getEndereco().getIdEndereco() != null) {
-                enderecoRepository.findById(clienteCadastrado.getEndereco().getIdEndereco())
-                        .orElseThrow(() -> new EnderecoNaoEncontradoException("Endereço não encontrado  com o ID: " + clienteDTO.getEndereco().getIdEndereco()));
-                clienteCadastrado.setEndereco(clienteDTO.getEndereco());
+            if (clienteDTO.getIdEndereco() != null) {
+                clienteCadastrado.setIdEndereco(clienteDTO.getIdEndereco());
             }
             clienteCadastrado = clienteRepository.save(clienteCadastrado);
             return new ClienteDTO(clienteCadastrado);
@@ -86,6 +82,8 @@ public class ClienteService {
 
     @Transactional(readOnly = true)
     public Cliente buscarClientePorId(Long idCliente) {
+        log.info("Busca cliente por ID {idCliente}");
+        log.info(idCliente);
         return clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não encontrado com o ID: " + idCliente));
     }

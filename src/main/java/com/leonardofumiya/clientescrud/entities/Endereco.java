@@ -28,10 +28,6 @@ public class Endereco {
     private String cidade;
     private String uf;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "endereco")
-    private List<Cliente> clientes = new ArrayList<>();
-
     public Endereco(Long idEndereco, String logradouro, String bairro, String numero, String cep, String cidade, String uf) {
         this.idEndereco = idEndereco;
         this.logradouro = logradouro;

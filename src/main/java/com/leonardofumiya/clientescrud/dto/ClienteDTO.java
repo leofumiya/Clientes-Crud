@@ -34,7 +34,7 @@ public class ClienteDTO {
     @NotBlank
     @Email
     private String email;
-    private Endereco endereco;
+    private Long idEndereco;
 
     public ClienteDTO(Cliente cliente) {
         this.idCliente = cliente.getIdCliente();
@@ -43,7 +43,7 @@ public class ClienteDTO {
         this.dataNascimento = cliente.getDataNascimento();
         this.telefone = cliente.getTelefone();
         this.email = cliente.getEmail();
-        this.endereco = cliente.getEndereco();
+        this.idEndereco = cliente.getIdEndereco();
     }
 
 }

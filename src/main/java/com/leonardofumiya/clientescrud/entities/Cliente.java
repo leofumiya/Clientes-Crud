@@ -23,8 +23,5 @@ public class Cliente {
     private LocalDate dataNascimento;
     private String telefone;
     private String email;
-
-    @ManyToOne
-    @JoinColumn(name = "endereco_id")
-    private Endereco endereco;
+    private Long idEndereco;
 }

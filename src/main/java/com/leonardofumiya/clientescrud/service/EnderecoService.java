@@ -1,10 +1,13 @@
 package com.leonardofumiya.clientescrud.service;
 
 import com.leonardofumiya.clientescrud.dto.EnderecoDTO;
+import com.leonardofumiya.clientescrud.entities.Cliente;
 import com.leonardofumiya.clientescrud.entities.Endereco;
 import com.leonardofumiya.clientescrud.exception.EnderecoNaoEncontradoException;
+import com.leonardofumiya.clientescrud.repository.ClienteRepository;
 import com.leonardofumiya.clientescrud.repository.EnderecoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,13 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class EnderecoService {
 
-    @Autowired
-    private EnderecoRepository enderecoRepository;
+    private final EnderecoRepository enderecoRepository;
+
+    private final ClienteService clienteService;
 
     @Transactional
-    public EnderecoDTO cadastrarEndereco(EnderecoDTO enderecoDTO) {
+    public EnderecoDTO cadastrarEndereco(EnderecoDTO enderecoDTO, Long idCliente) {
+        Cliente clienteCadastrado = clienteService.buscarClientePorId(idCliente);
         Endereco endereco = new Endereco();
         endereco.setLogradouro(enderecoDTO.getLogradouro());
         endereco.setBairro(enderecoDTO.getBairro());
@@ -28,6 +34,9 @@ public class EnderecoService {
         endereco.setUf(enderecoDTO.getUf());
 
         endereco = enderecoRepository.save(endereco);
+
+        clienteCadastrado.setIdEndereco(endereco.getIdEndereco());
+
         return new EnderecoDTO(endereco);
     }
 

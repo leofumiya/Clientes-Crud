@@ -18,9 +18,9 @@ public class EnderecoController {
     @Autowired
     private EnderecoService enderecoService;
 
-    @PostMapping
-    public ResponseEntity<EnderecoDTO> cadastrarEndereco(@RequestBody @Valid EnderecoDTO enderecoDTO) {
-        EnderecoDTO enderecoCadastrado = enderecoService.cadastrarEndereco(enderecoDTO);
+    @PostMapping("/{idCliente}/cadastro")
+    public ResponseEntity<EnderecoDTO> cadastrarEndereco(@RequestBody @Valid EnderecoDTO enderecoDTO, @PathVariable Long idCliente) {
+        EnderecoDTO enderecoCadastrado = enderecoService.cadastrarEndereco(enderecoDTO, idCliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(enderecoCadastrado);
     }
 
